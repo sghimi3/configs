@@ -6,172 +6,82 @@ source "/usr/lib/smartlog/smartlog.sh"
 set +e
 
 # ==================================================================================
+# If file extension is not given, attempt to find the source file
+# ==================================================================================
+find_source() {
+
+  # Search for source file in current directory
+  searchfile=`ls $file.* 2> /dev/null`
+
+  # Exit script if no matches are found
+  if [ -z "$searchfile" ]; then
+    die "Source file for $file not found"
+  elif [ $(echo "$searchfile" | wc -l) -gt 1 ]; then
+    die "Multiple file extensions found for $file. Please supply full file name"
+  else
+    file="$searchfile"
+    ext="${file##*.}"
+  fi
+
+}
+
+
+# ==================================================================================
 # Get file info
 # ==================================================================================
-file="$1"             # filename.extension
+file="$1"           # filename.extension
 ext="${file##*.}"   # extension
 exe="${file%%.*}"   # filename
 args="${@:2}"       # all arguments passed after file name
 
 
-# ==================================================================================
 # Exit if file name is not given
-# ==================================================================================
 if [ -z "$file" ]; then
   die "Usage: run [filename.extension] [args]"
+# Attempt to find extension if not given
+elif [[ "$file" != *.* ]]; then
+  find_source
 fi
 
 
 # ==================================================================================
-# If file extension is not given, attempt to find the source file
-# ==================================================================================
-if [[ "$file" != *.* ]]; then
-
-  # Search for source file in current directory
-  searchfile=`ls $file.* 2> /dev/null`
-  
-  # Exit script if no matches are found
-  if [ -z "$searchfile" ]; then
-    die "Source file for $file not found"
-  fi
-  
-  # Exit if multiple files match
-  if [ $(echo "$searchfile" | wc -l) -gt 1 ]; then
-    die "Multiple file extensions found for $file. Please supply full file name"
-    
-  # Unnecessary? If multiple files match, request extension name
-  # if [ $(echo "$searchfile" | wc -l) -gt 1 ]; then
-  #   echo "Please specify file extension: "
-  #   read ext
-  #   file="$exe"."$ext"
-  #   while [ -z `ls $file 2> /dev/null` ]; do
-  #     echo "$file not found. Please specify file extension: "
-  #     read ext
-  #     file="$exe"."$ext"
-  #   done
-    
-  # File found
-  else
-    file="$searchfile"
-    ext="${file##*.}"
-  fi
-  
-fi
-
-
-# ==================================================================================
-# Set compilation commands for each filetype
+# Set commands for each filetype
 # ==================================================================================
 declare -A compile
-compile[c]="gcc $file -o $exe"
-compile[cpp]="g++ $file -o $exe"
-compile[hs]="ghc $file -o $exe"
-compile[tex]="pdflatex $file"
-compile[java]="javac $file"
-compile[rs]="rustc $file -o $exe"
-compile[cs]="mcs $file"
-compile[php]="php $file > $exe.html"
-compile[rst]="rst2html $file > $exe.html"
-compile[sh]=""
-compile[py]=""
-compile[m]=""
-compile[R]=""
-
-
-# ==================================================================================
-# Set flags for each filetype
-# ==================================================================================
 declare -A flags
-flags[c]="-g -std=c99 -lpthread -lm -lrt"
-flags[cpp]="-g -std=c++11"
-flags[hs]=""
-flags[tex]=""
-flags[java]="-g"
-flags[rs]="-g"
-flags[cs]="-debug"
-flags[php]=""
-flags[rst]=""
-flags[sh]=""
-flags[py]=""
-flags[m]=""
-flags[R]="--no-save"
-
-# ==================================================================================
-# Set files to remove after compiling
-# ==================================================================================
 declare -A clean
-clean[c]=""
-clean[cpp]=""
-clean[hs]="$exe.hi $exe.o"
-clean[tex]="$exe.log $exe.aux"
-clean[java]=""
-clean[rs]=""
-clean[cs]=""
-clean[php]=""
-clean[rst]="rst2html $file > $exe.html"
-clean[sh]=""
-clean[py]=""
-clean[m]=""
-clean[R]=""
-
-
-
-# ==================================================================================
-# Set execute commands for each filetype
-# ==================================================================================
 declare -A run
-run[c]="./$exe"
-run[cpp]="./$exe"
-run[hs]="./$exe"
-run[tex]="evince $exe.pdf"
-run[java]="java $exe"
-run[rs]="./$exe"
-run[cs]="mono $exe.exe"
-run[php]="firefox $exe.html"
-run[rst]="firefox $exe.html"
-run[sh]="sh $file"
-run[py]="python $file"
 
+compile[c]="gcc $file -o $exe"    flags[c]="-g -std=c99 -lm" run[c]="./$exe"
+compile[cpp]="g++ $file -o $exe"  flags[cpp]="-g -std=c++11" run[cpp]="./$exe"
+compile[hs]="ghc $file -o $exe"   flags[hs]=""               run[hs]="./$exe"           
+compile[tex]="pdflatex $file"     flags[tex]=""              run[tex]="evince $exe.pdf" 
+compile[java]="javac $file"       flags[java]="-g"           run[java]="java $exe"
+compile[rs]="rustc $file -o $exe" flags[rs]="-g"             run[rs]="./$exe"
+compile[cs]="mcs $file"           flags[cs]="-debug"         run[cs]="mono $exe.exe"
+compile[php]="php $file"          flags[php]="$exe.html"     run[php]="firefox $exe.html"
+compile[rst]="rst2html $file"     flags[rst]="$exe.html"     run[rst]="firefox $exe.html"
+                                  flags[sh]=""               run[sh]="sh $file"
+                                  flags[py]=""               run[py]="python $file"
+
+# Auxiliary files to remove; not sure if important
+clean[hs]="$exe.hi $exe.o"
+clean[tex]="$exe.log $exe.aux $exe.out"
 
 # ==================================================================================
 # Compile and run commands based on file extension
 # ==================================================================================
 case "$ext" in
-  c)    ${compile[$ext]} ${flags[$ext]} && ${run[$ext]} $args                      ;;
-  cpp)  ${compile[$ext]} ${flags[$ext]} && ${run[$ext]} $args                      ;;
-  hs)   ${compile[$ext]} ${flags[$ext]} && rm ${clean[$ext]} && ${run[$ext]} $args ;;
-  tex)  ${compile[$ext]} ${flags[$ext]} && rm ${clean[$ext]} && ${run[$ext]} $args ;;
-  java) ${compile[$ext]} ${flags[$ext]} && ${run[$ext]} $args                      ;;
-  rs)   ${compile[$ext]} ${flags[$ext]} && ${run[$ext]} $args                      ;;
-  cs)   ${compile[$ext]} ${flags[$ext]} && ${run[$ext]} $args                      ;;
-  php)  ${compile[$ext]} ${flags[$ext]} && ${run[$ext]} $args                      ;;
-  rst)  ${compile[$ext]} ${flags[$ext]} && ${run[$ext]} $args                      ;;
-  sh)                                      ${run[$ext]} $args                      ;;
-  py)                                      ${run[$ext]} $args                      ;;
-  m)    octave $args < $file                                                       ;;
-  R)    R $args < $file ${flags[$ext]}                                             ;;
-  *)    die "File \"$file\" with extension \"$ext\" not found!"                    ;;
+  c)    ${compile[$ext]}   ${flags[$ext]} && ${run[$ext]} $args                    ;;
+  cpp)  ${compile[$ext]}   ${flags[$ext]} && ${run[$ext]} $args                    ;;
+  hs)   ${compile[$ext]}   ${flags[$ext]} && ${run[$ext]} $args; rm ${clean[$ext]} ;;
+  tex)  ${compile[$ext]}   ${flags[$ext]} && ${run[$ext]} $args; rm ${clean[$ext]} ;;
+  java) ${compile[$ext]}   ${flags[$ext]} && ${run[$ext]} $args                    ;;
+  rs)   ${compile[$ext]}   ${flags[$ext]} && ${run[$ext]} $args                    ;;
+  cs)   ${compile[$ext]}   ${flags[$ext]} && ${run[$ext]} $args                    ;;
+  php)  ${compile[$ext]} > ${flags[$ext]} && ${run[$ext]} $args                    ;;
+  rst)  ${compile[$ext]} > ${flags[$ext]} && ${run[$ext]} $args                    ;;
+  sh)                                        ${run[$ext]} $args                    ;;
+  py)                                        ${run[$ext]} $args                    ;;
+  *)    die "File \"$file\" with extension \"$ext\" not found"                     ;;
 esac
-
-
-
-# ==================================================================================
-# Compile and run commands based on file extension
-# ==================================================================================
-# case "$ext" in
-#   #     Compile                     Flags/Cleanup   Run                     Args
-#   c)    gcc $file -o $exe           ${flags[c]}     && ./$exe               $args ;;
-#   cpp)  g++ $file -o $exe           ${flags[cpp]}   && ./$exe               $args ;;
-#   hs)   ghc $file -o $exe     && rm ${clean[hs]}    && ./$exe               $args ;;
-#   tex)  pdflatex $file        && rm ${clean[tex]}   && evince $exe.pdf      $args ;;
-#   java) javac $file                 ${flags[java]}  && java $exe            $args ;;
-#   rs)   rustc $file -o $exe         ${flags[rs]}    && ./$exe               $args ;;
-#   cs)   mcs $file                   ${flags[cs]}    && mono $exe.exe        $args ;;
-#   php)  php $file      > $exe.html                  && firefox $exe.html    $args ;;
-#   rst)  rst2html $file > $exe.html                  && firefox $exe.html    $args ;;
-#   sh)                                                  sh $file             $args ;;
-#   py)                                                  python $file         $args ;;
-#   m)                                                   octave $args < $file       ;;
-#   R)                                                   R $args < $file {flags[R]} ;;
-#   *)    die "File \"$file\" with extension \"$ext\" not found!"                   ;;
-# esac

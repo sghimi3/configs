@@ -12,9 +12,9 @@ alias fixwifi='sudo service network-manager restart'
 alias cp='cp -i'
 alias mv='mv -i'
 alias gs='git status'
-alias gl='git log'
 alias gd='git diff'
 alias ga='git add -A'
+alias gl='git log'
 
 function cd() {
   n_dir="$*"
@@ -24,26 +24,12 @@ function cd() {
   builtin cd "${n_dir}" && ls
 }
 
+# Compile 32-bit executable in C
 function run32() {
   if [ ! -z "$1" ]; then
     gcc -g $1.c -o $1 -lpthread -lrt -lm -fopenmp -m32 && ./$1
   else
     echo 'Usage: run [executable]'
-  fi
-}
-
-function pdf() {
-  if [ -z "$1" ]; then
-    for file in $(ls *tex | sed 's/.tex//')
-    do
-      pdflatex $file.tex && rm $file.log $file.aux && evince $file.pdf
-    done
-  elif [[ "$1" == *tex ]]; then
-    file=$(echo $1 | sed 's/.tex//')
-    pdflatex $file.tex && rm $file.log $file.aux && evince $file.pdf
-  else
-    echo "LaTex file not found!"
-    echo "Usage: pdf [file.tex]"
   fi
 }
 

@@ -15,13 +15,13 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'scrooloose/syntastic'
 Plugin 'bling/vim-airline'
 Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-repeat'
+Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'godlygeek/tabular'
-Plugin 'tpope/vim-repeat'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'ConradIrwin/vim-bracketed-paste'
-Plugin 'scrooloose/nerdtree'
 Plugin 'neovimhaskell/haskell-vim'
 Plugin 'rust-lang/rust.vim'
 
@@ -92,13 +92,6 @@ let g:haskell_enable_static_pointers = 1  " to enable highlighting of `static`
 let g:haskell_classic_highlighting = 0
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Required
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" REQUIRED. This makes vim invoke Latex-Suite when you open a tex file.
-filetype plugin on
-
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " My options
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -130,10 +123,11 @@ iab fudoc /**
 \<CR>@return  
 \<CR>/<Up><Up><Up>
 
+" Long C/C++ comment
 iab longcmt /*******************************************************************************
 \<CR><Backspace><Backspace><Backspace>*******************************************************************************/<Up>
 
-" Tab/space/numbering options
+" Tab/space/numbering/formatting options
 set number
 set expandtab
 set tabstop=2
@@ -164,10 +158,11 @@ endfunction
 " Press Space to turn off highlighting and clear any message already displayed.
 :nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
 
-:nnoremap <leader>r :! run % <CR>
-:nnoremap <leader>g :! run % 
-" :nnoremap <leader>c :! make clean && make && file=$(echo % \| sed "s/\.tex//") && rm $file.blg $file.log $file.bbl $file.aux && evince $file.pdf 
+" Shortcut to call run script that compiles and runs programs
+:nnoremap <leader>r :! run % 
+" Compile and run tex files if Makefile is necessary
 :nnoremap <leader>c :! make && file=$(echo % \| sed "s/\.tex/\.pdf/") && evince $file && make clean<CR>
+" :nnoremap <leader>c :! make clean && make && file=$(echo % \| sed "s/\.tex//") && rm $file.blg $file.log $file.bbl $file.aux && evince $file.pdf 
 
 " Map j and k to gj and gk for better editing
 nnoremap j gj
@@ -175,23 +170,19 @@ nnoremap k gk
 
 " Map O to create newline without going into Insert mode
 nnoremap O o<Space><Backspace><Esc>
+
+" Automatically close braces after pressing enter
 inoremap {<CR> {<CR>}<Esc>ko
 
-" align equal signs
-" noremap <silent> <leader>t :Tabularize /=<CR>
+" Call Tabularize to align columns
 noremap <leader>t :Tabularize /
-let g:haskell_tabular = 1
 
 map <C-j> /[<CR>ci[
 imap <C-j> <Esc>/[<CR>ci[
 "map <C-k> /[<CR>xxi
 "imap <C-k> <Esc>/[<CR>xxi
-"map <C-k> /_<CR>lcw
-"imap <C-k> <Esc>/_<CR>lcw
 map <C-k> /{<CR>ciB
 imap <C-k> <Esc>/{<CR>ciB
-"map <C-m> /(<CR>cib
-"imap <C-m> <Esc>/(<CR>cib
 
 " au BufNewFile,BufRead *.txt  set filetype=rst
 au BufNewFile,BufRead *.para set filetype=rst

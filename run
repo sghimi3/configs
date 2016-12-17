@@ -1,19 +1,16 @@
 #!/bin/bash
 
-
 source "/usr/lib/smartlog/smartlog.sh"
-
 set +e
 
-# ==================================================================================
+# ===================================================================================
 # If file extension is not given, attempt to find the source file
-# ==================================================================================
+# ===================================================================================
 find_source() {
-
   # Search for source file in current directory
   searchfile=`ls $file.* 2> /dev/null`
 
-  # Exit script if no matches are found
+  # Exit script if no unique matches are found
   if [ -z "$searchfile" ]; then
     die "Source file for $file not found"
   elif [ $(echo "$searchfile" | wc -l) -gt 1 ]; then
@@ -22,18 +19,15 @@ find_source() {
     file="$searchfile"
     ext="${file##*.}"
   fi
-
 }
 
-
-# ==================================================================================
+# ===================================================================================
 # Get file info
-# ==================================================================================
+# ===================================================================================
 file="$1"           # filename.extension
 ext="${file##*.}"   # extension
 exe="${file%%.*}"   # filename
 args="${@:2}"       # all arguments passed after file name
-
 
 # Exit if file name is not given
 if [ -z "$file" ]; then
@@ -43,10 +37,9 @@ elif [[ "$file" != *.* ]]; then
   find_source
 fi
 
-
-# ==================================================================================
+# ===================================================================================
 # Set commands for each filetype
-# ==================================================================================
+# ===================================================================================
 declare -A compile
 declare -A flags
 declare -A clean
@@ -68,9 +61,9 @@ compile[rst]="rst2html $file"     flags[rst]="$exe.html"     run[rst]="firefox $
 clean[hs]="$exe.hi $exe.o"
 clean[tex]="$exe.log $exe.aux $exe.out"
 
-# ==================================================================================
+# ===================================================================================
 # Compile and run commands based on file extension
-# ==================================================================================
+# ===================================================================================
 case "$ext" in
   c)    ${compile[$ext]}   ${flags[$ext]} && ${run[$ext]} $args                    ;;
   cpp)  ${compile[$ext]}   ${flags[$ext]} && ${run[$ext]} $args                    ;;

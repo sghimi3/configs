@@ -1,5 +1,3 @@
-" Author: Sweta Ghimire
-"
 " Original: Tomas Restrepo <tomas@winterdom.com>
 " https://github.com/tomasr/molokai
 "
@@ -264,7 +262,7 @@ if &t_Co > 255
        hi Title           ctermfg=203
        hi Visual                      ctermbg=238
 
-       hi Comment         ctermfg=63
+       hi Comment         ctermfg=240
        hi LineNr          ctermfg=239 ctermbg=233
        hi NonText         ctermfg=239
        hi SpecialKey      ctermfg=239

@@ -1,7 +1,6 @@
 alias cd..='cd ..'
 alias ..='cd ..'
 alias ...='cd ../../'
-alias ....='cd ../../../'
 alias c='clear'
 alias chist='history -c && history -w'
 alias vi='vim'
@@ -13,9 +12,18 @@ alias cp='cp -i'
 alias mv='mv -i'
 alias gs='git status'
 alias gd='git diff'
-alias ga='git add -A'
 alias gl='git log'
+alias xc='xcape -e '"'"'Control_L=Escape'"'"
 
+function ga() {
+  if [ -z "$1" ]; then
+    git add -A
+  else
+    git add "$@"
+  fi
+}
+
+# Change directory and ls automatically
 function cd() {
   n_dir="$*"
   if [ $# -eq 0 ]; then
@@ -33,5 +41,7 @@ function run32() {
   fi
 }
 
-# mutt email@hostname.com -a File1 File2 -s "Subject" <<< "Body"
-# tar cvvzf dir-name.tgz dir-name/
+function remindme() {
+  echo "mutt email@hostname.com -a File1 File2 -s \"Subject\" <<< \"Body\""
+  echo "tar cvvzf dir-name.tgz dir-name/"
+}

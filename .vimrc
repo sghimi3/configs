@@ -24,12 +24,18 @@ Plugin 'vim-airline/vim-airline-themes'
 Plugin 'ConradIrwin/vim-bracketed-paste'
 Plugin 'neovimhaskell/haskell-vim'
 Plugin 'rust-lang/rust.vim'
+Plugin 'ctrlpvim/ctrlp.vim'
+Plugin 'christoomey/vim-tmux-navigator'
+Plugin 'plasticboy/vim-markdown'
 
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
 syntax on
+
+let mapleader = "\<Space>"
+
 " To ignore plugin indent changes, instead use:
 "filetype plugin on
 "
@@ -70,10 +76,14 @@ let g:airline_theme='badwolf'
 let g:airline#extensions#whitespace#checks = [ 'indent', 'mixed-indent-file' ]
 let g:airline_section_x = ''
 let g:airline_section_y = ''
-" let g:airline_section_b = '%{getcwd()}'
-let g:airline_section_c = '%F'
-let g:airline_left_sep = ''
+"let g:airline_section_c = '%F'
+"let g:airline_left_sep = ''
 let g:airline_right_sep = ''
+let g:airline_powerline_fonts = 1
+if !exists('g:airline_symbols')
+  let g:airline_symbols = {}
+endif
+let g:airline#extensions#tabline#show_buffers = 0
 
 " For NERD-commenter
 let g:NERDDefaultAlign = 'left'
@@ -90,6 +100,14 @@ let g:haskell_enable_pattern_synonyms = 1 " to enable highlighting of `pattern`
 let g:haskell_enable_typeroles = 1        " to enable highlighting of type roles
 let g:haskell_enable_static_pointers = 1  " to enable highlighting of `static`
 let g:haskell_classic_highlighting = 0
+
+" For Ctrl-P
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip
+
+" For vim-markdown
+let g:vim_markdown_folding_disabled = 1
+let g:vim_markdown_math = 1
+
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " My options
@@ -138,25 +156,27 @@ set hlsearch
 set wrap
 set magic
 set formatoptions=nt
-set textwidth=80
+set textwidth=90
 set wrapmargin=0
 set backspace=indent,eol,start
 set ff=unix
+set conceallevel=2
+
 
 " Live autowrapping for papers/long texts
-nnoremap <silent> <C-a> :call AutoWrap()<CR>
-function AutoWrap()
-  if &formatoptions =~ 'a'
-    setlocal formatoptions-=a
-    echo "unwrap"
-  else
-    setlocal formatoptions+=a
-    echo "wrap"
-  endif
-endfunction
+" nnoremap <silent> <C-a> :call AutoWrap()<CR>
+" function AutoWrap()
+"   if &formatoptions =~ 'a'
+"     setlocal formatoptions-=a
+"     echo "unwrap"
+"   else
+"     setlocal formatoptions+=a
+"     echo "wrap"
+"   endif
+" endfunction
 
 " Press Space to turn off highlighting and clear any message already displayed.
-:nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
+:nnoremap <silent> <leader><Space> :nohlsearch<Bar>:echo<CR>
 
 " Shortcut to call run script that compiles and runs programs
 :nnoremap <leader>r :! run % 
@@ -164,25 +184,25 @@ endfunction
 :nnoremap <leader>c :! make && file=$(echo % \| sed "s/\.tex/\.pdf/") && evince $file && make clean<CR>
 " :nnoremap <leader>c :! make clean && make && file=$(echo % \| sed "s/\.tex//") && rm $file.blg $file.log $file.bbl $file.aux && evince $file.pdf 
 
-" Map j and k to gj and gk for better editing
-nnoremap j gj
-nnoremap k gk
-
 " Map O to create newline without going into Insert mode
 nnoremap O o<Space><Backspace><Esc>
+
 
 " Automatically close braces after pressing enter
 inoremap {<CR> {<CR>}<Esc>ko
 
-" Call Tabularize to align columns
+" Call Tabularize to align columns 
 noremap <leader>t :Tabularize /
 
-map <C-j> /[<CR>ci[
-imap <C-j> <Esc>/[<CR>ci[
+"map <C-j> /[<CR>ci[
+"imap <C-j> <Esc>/[<CR>ci[
 "map <C-k> /[<CR>xxi
 "imap <C-k> <Esc>/[<CR>xxi
-map <C-k> /{<CR>ciB
-imap <C-k> <Esc>/{<CR>ciB
+"map <C-k> /{<CR>ciB
+"imap <C-k> <Esc>/{<CR>ciB
 
 " au BufNewFile,BufRead *.txt  set filetype=rst
 au BufNewFile,BufRead *.para set filetype=rst
+
+" Remove delay when escaping in Vim
+set timeoutlen=1000 ttimeoutlen=10

@@ -141,9 +141,6 @@ iab fudoc /**
 \<CR>@return  
 \<CR>/<Up><Up><Up>
 
-" Long C/C++ comment
-iab longcmt /*******************************************************************************
-\<CR><Backspace><Backspace><Backspace>*******************************************************************************/<Up>
 
 " Tab/space/numbering/formatting options
 set number
@@ -161,7 +158,7 @@ set wrapmargin=0
 set backspace=indent,eol,start
 set ff=unix
 set conceallevel=2
-
+set clipboard=unnamedplus
 
 " Live autowrapping for papers/long texts
 " nnoremap <silent> <C-a> :call AutoWrap()<CR>
@@ -175,24 +172,23 @@ set conceallevel=2
 "   endif
 " endfunction
 
+" Shortcut to save
+:nnoremap <leader>w :w<CR>
 " Press Space to turn off highlighting and clear any message already displayed.
-:nnoremap <silent> <leader><Space> :nohlsearch<Bar>:echo<CR>
-
+:nnoremap <silent>\ :nohlsearch<Bar>:echo<CR>
 " Shortcut to call run script that compiles and runs programs
 :nnoremap <leader>r :! run % 
 " Compile and run tex files if Makefile is necessary
 :nnoremap <leader>c :! make && file=$(echo % \| sed "s/\.tex/\.pdf/") && evince $file && make clean<CR>
 " :nnoremap <leader>c :! make clean && make && file=$(echo % \| sed "s/\.tex//") && rm $file.blg $file.log $file.bbl $file.aux && evince $file.pdf 
 
+" Call Tabularize to align columns 
+noremap <leader>t :Tabularize /
 " Map O to create newline without going into Insert mode
 nnoremap O o<Space><Backspace><Esc>
 
-
 " Automatically close braces after pressing enter
 inoremap {<CR> {<CR>}<Esc>ko
-
-" Call Tabularize to align columns 
-noremap <leader>t :Tabularize /
 
 "map <C-j> /[<CR>ci[
 "imap <C-j> <Esc>/[<CR>ci[

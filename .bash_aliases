@@ -14,6 +14,24 @@ alias gs='git status'
 alias gd='git diff'
 alias gl='git log'
 alias xc='xcape -e '"'"'Control_L=Escape'"'"
+alias setclip='xclip -selection c'
+alias getclip='xclip -selection clipboard -o'
+
+function go() {
+  if [ -z "$1" ]; then
+    echo "Usage: go [server_name]"
+  elif [ "$1" == "wiki" ]; then
+    ssh -p 2525 sghimire@wiki.cct.lsu.edu
+  elif [ "$1" == "scribe" ]; then
+    ssh -p 2525 sghimire@scribe.cct.lsu.edu
+  elif [ "$1" == "vault" ]; then
+    ssh -p 2525 sghimire@vault.cct.lsu.edu
+  elif [ "$1" == "steam" ]; then
+    ssh -p 2525 sghimi3@steam.cct.lsu.edu
+  else
+    echo "$1.cct.lsu.edu not found!"
+  fi
+}
 
 function ga() {
   if [ -z "$1" ]; then

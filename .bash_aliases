@@ -20,16 +20,17 @@ alias getclip='xclip -selection clipboard -o'
 function go() {
   if [ -z "$1" ]; then
     echo "Usage: go [server_name]"
-  elif [ "$1" == "wiki" ]; then
-    ssh -p 2525 sghimire@wiki.cct.lsu.edu
-  elif [ "$1" == "scribe" ]; then
-    ssh -p 2525 sghimire@scribe.cct.lsu.edu
-  elif [ "$1" == "vault" ]; then
-    ssh -p 2525 sghimire@vault.cct.lsu.edu
-  elif [ "$1" == "steam" ]; then
-    ssh -p 2525 sghimi3@steam.cct.lsu.edu
   else
-    echo "$1.cct.lsu.edu not found!"
+    case "$1" in
+      wiki)   ssh -p 2525 sghimire@wiki.cct.lsu.edu   ;;
+      scribe) ssh -p 2525 sghimire@scribe.cct.lsu.edu ;;
+      vault)  ssh -p 2525 sghimire@vault.cct.lsu.edu  ;;
+      bounce) ssh -p 2525 sghimire@bounce.cct.lsu.edu ;;
+      db)     ssh -p 2525 sghimire@db.cct.lsu.edu     ;;
+      steam)  ssh -p 2525 sghimi3@steam.cct.lsu.edu   ;;
+      whaley) ssh cs350115@classes.csc.lsu.edu        ;;
+      *)      echo "$1.cct.lsu.edu not found!"        ;;
+    esac
   fi
 }
 

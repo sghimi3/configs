@@ -1,10 +1,6 @@
 #!/bin/bash
 
 
-source "/usr/lib/smartlog/smartlog.sh"
-
-set +e
-
 # ==================================================================================
 # If file extension is not given, attempt to find the source file
 # ==================================================================================
@@ -15,9 +11,11 @@ find_source() {
 
   # Exit script if no matches are found
   if [ -z "$searchfile" ]; then
-    die "Source file for $file not found"
+    echo "Source file for $file not found"
+    exit 1
   elif [ $(echo "$searchfile" | wc -l) -gt 1 ]; then
-    die "Multiple file extensions found for $file. Please supply full file name"
+    echo "Multiple file extensions found for $file. Please supply full file name"
+    exit 1
   else
     file="$searchfile"
     ext="${file##*.}"
@@ -37,7 +35,8 @@ args="${@:2}"       # all arguments passed after file name
 
 # Exit if file name is not given
 if [ -z "$file" ]; then
-  die "Usage: run [filename.extension] [args]"
+  echo "Usage: run [filename.extension] [args]"
+  exit 1
 # Attempt to find extension if not given
 elif [[ "$file" != *.* ]]; then
   find_source
@@ -85,5 +84,5 @@ case "$ext" in
   php)  ${compile[$ext]} > ${flags[$ext]} && ${run[$ext]} $args                    ;;
   sh)                                        ${run[$ext]} $args                    ;;
   py)                                        ${run[$ext]} $args                    ;;
-  *)    die "File \"$file\" with extension \"$ext\" not found"                     ;;
+  *)    echo "File \"$file\" with extension \"$ext\" not found"                    ;;
 esac

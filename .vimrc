@@ -26,7 +26,6 @@ Plugin 'neovimhaskell/haskell-vim'
 Plugin 'rust-lang/rust.vim'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'christoomey/vim-tmux-navigator'
-"Plugin 'plasticboy/vim-markdown'
 Plugin 'gabrielelana/vim-markdown'
 Plugin 'tpope/vim-fugitive'
 
@@ -176,7 +175,7 @@ set clipboard=unnamedplus
 
 " Shortcut to save
 :nnoremap <leader>w :w<CR>
-" Press Space to turn off highlighting and clear any message already displayed.
+" Press the backslash to turn off highlighting and clear any message already displayed.
 :nnoremap <silent>\ :nohlsearch<Bar>:echo<CR>
 " Shortcut to call run script that compiles and runs programs
 :nnoremap <leader>r :! run % 
@@ -192,6 +191,9 @@ nnoremap O o<Space><Backspace><Esc>
 " Automatically close braces after pressing enter
 inoremap {<CR> {<CR>}<Esc>ko
 
+nnoremap j gj
+nnoremap k gk
+
 "map <C-j> /[<CR>ci[
 "imap <C-j> <Esc>/[<CR>ci[
 "map <C-k> /[<CR>xxi
@@ -201,6 +203,7 @@ inoremap {<CR> {<CR>}<Esc>ko
 
 " au BufNewFile,BufRead *.txt  set filetype=rst
 au BufNewFile,BufRead *.para set filetype=rst
+au BufEnter *.tex set tw=0
 "au BufEnter *.md set sw=4 ts=4
 
 " Remove delay when escaping in Vim

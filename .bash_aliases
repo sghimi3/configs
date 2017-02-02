@@ -29,6 +29,7 @@ function go() {
       db)     ssh -p 2525 sghimire@db.cct.lsu.edu     ;;
       steam)  ssh -p 2525 sghimi3@steam.cct.lsu.edu   ;;
       whaley) ssh cs350115@classes.csc.lsu.edu        ;;
+      sql)    ssh cs440214@classes.csc.lsu.edu        ;;
       *)      echo "$1.cct.lsu.edu not found!"        ;;
     esac
   fi

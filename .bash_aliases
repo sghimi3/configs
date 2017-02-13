@@ -4,12 +4,9 @@ alias ...='cd ../../'
 alias c='clear'
 alias chist='history -c && history -w'
 alias vi='vim'
-alias csc='ssh cs310229@classes.csc.lsu.edu'
 alias op='gnome-open'
 alias update='sudo apt update && sudo apt upgrade'
 alias fixwifi='sudo service network-manager restart'
-alias cp='cp -i'
-alias mv='mv -i'
 alias gs='git status'
 alias gd='git diff'
 alias gl='git log'
@@ -46,9 +43,10 @@ function ga() {
 # Change directory and ls automatically
 function cd() {
   n_dir="$*"
-  if [ $# -eq 0 ]; then
-    n_dir=${HOME}
-  fi
+  if [ $# -eq 0 ]; then 
+    n_dir=${HOME}; fi
+  if [ "$1" == "git" ]; then 
+    n_dir=$(git rev-parse --show-toplevel); fi
   builtin cd "${n_dir}" && ls
 }
 

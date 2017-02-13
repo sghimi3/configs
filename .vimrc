@@ -24,7 +24,6 @@ Plugin 'vim-airline/vim-airline-themes'
 Plugin 'ConradIrwin/vim-bracketed-paste'
 Plugin 'neovimhaskell/haskell-vim'
 Plugin 'rust-lang/rust.vim'
-Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'gabrielelana/vim-markdown'
 Plugin 'tpope/vim-fugitive'
@@ -154,7 +153,7 @@ set hlsearch
 set wrap
 set magic
 set formatoptions=nt
-set textwidth=90
+set textwidth=80
 set wrapmargin=0
 set backspace=indent,eol,start
 set ff=unix
@@ -204,6 +203,7 @@ nnoremap k gk
 " au BufNewFile,BufRead *.txt  set filetype=rst
 au BufNewFile,BufRead *.para set filetype=rst
 au BufEnter *.tex set tw=0
+au BufEnter *.S set sw=4 ts=4
 "au BufEnter *.md set sw=4 ts=4
 
 " Remove delay when escaping in Vim

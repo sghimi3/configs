@@ -11,7 +11,7 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 
 " my plugins
-"Plugin 'valloric/youcompleteme'
+" Plugin 'valloric/youcompleteme'
 Plugin 'scrooloose/syntastic'
 Plugin 'bling/vim-airline'
 Plugin 'tpope/vim-surround'
@@ -27,6 +27,8 @@ Plugin 'rust-lang/rust.vim'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'gabrielelana/vim-markdown'
 Plugin 'tpope/vim-fugitive'
+Plugin 'mattn/emmet-vim'
+Plugin 'jaxbot/browserlink.vim'
 
 
 " All of your Plugins must be added before the following line
@@ -50,7 +52,7 @@ let mapleader = "\<Space>"
 " let g:ycm_confirm_extra_conf = 0
 " set completeopt-=preview
 " "nnoremap <F5> :YcmForceCompileAndDiagnostics<CR>
-" let g:ycm_show_diagnostics_ui = 0
+" let g:ycm_show_diagnostics_ui = 1
 " let g:ycm_enable_diagnostic_signs = 0
 " let g:ycm_enable_diagnostic_highlighting = 0
 " let g:ycm_echo_current_diagnostic = 0
@@ -88,6 +90,8 @@ let g:airline#extensions#tabline#show_buffers = 0
 " For NERD-commenter
 let g:NERDDefaultAlign = 'left'
 let g:NERDSpaceDelims = 1
+let g:NERDAltDelims_c = 1
+let g:NERDCustomDelimiters = { 'asm': { 'left': '//' } }
 
 " For NERDTree
 map <silent> <leader>n :NERDTreeToggle<CR>
@@ -160,18 +164,6 @@ set ff=unix
 set conceallevel=2
 set clipboard=unnamedplus
 
-" Live autowrapping for papers/long texts
-" nnoremap <silent> <C-a> :call AutoWrap()<CR>
-" function AutoWrap()
-"   if &formatoptions =~ 'a'
-"     setlocal formatoptions-=a
-"     echo "unwrap"
-"   else
-"     setlocal formatoptions+=a
-"     echo "wrap"
-"   endif
-" endfunction
-
 " Shortcut to save
 :nnoremap <leader>w :w<CR>
 " Press the backslash to turn off highlighting and clear any message already displayed.
@@ -180,7 +172,8 @@ set clipboard=unnamedplus
 :nnoremap <leader>r :! run % 
 " Compile and run tex files if Makefile is necessary
 :nnoremap <leader>c :! make && file=$(echo % \| sed "s/\.tex/\.pdf/") && evince $file && make clean<CR>
-" :nnoremap <leader>c :! make clean && make && file=$(echo % \| sed "s/\.tex//") && rm $file.blg $file.log $file.bbl $file.aux && evince $file.pdf 
+" Find size of current assembly file
+:nnoremap <leader>f :! fsize % 
 
 " Call Tabularize to align columns 
 noremap <leader>t :Tabularize /

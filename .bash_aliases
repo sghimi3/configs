@@ -10,24 +10,31 @@ alias fixwifi='sudo service network-manager restart'
 alias gs='git status'
 alias gd='git diff'
 alias gl='git log'
+alias gg='cd $(git rev-parse --show-toplevel)'
+alias ta='tmux attach -t '
 alias xc='xcape -e '"'"'Control_L=Escape'"'"
 alias setclip='xclip -selection c'
 alias getclip='xclip -selection clipboard -o'
+
+function cct() {
+  if [ -z "$1" ]; then
+    echo "Usage: go [server_name]"
+  elif [ "$1" == "redstick" ]; then
+    ssh -p 2525 sghimire@redstickfestival.org 
+  else
+    ssh -p 2525 sghimire@"$1".cct.lsu.edu
+  fi
+}
 
 function go() {
   if [ -z "$1" ]; then
     echo "Usage: go [server_name]"
   else
     case "$1" in
-      wiki)   ssh -p 2525 sghimire@wiki.cct.lsu.edu   ;;
-      scribe) ssh -p 2525 sghimire@scribe.cct.lsu.edu ;;
-      vault)  ssh -p 2525 sghimire@vault.cct.lsu.edu  ;;
-      bounce) ssh -p 2525 sghimire@bounce.cct.lsu.edu ;;
-      db)     ssh -p 2525 sghimire@db.cct.lsu.edu     ;;
-      steam)  ssh -p 2525 sghimi3@steam.cct.lsu.edu   ;;
-      whaley) ssh cs350115@classes.csc.lsu.edu        ;;
-      sql)    ssh cs440214@classes.csc.lsu.edu        ;;
-      *)      echo "$1.cct.lsu.edu not found!"        ;;
+      steam)    ssh -p 2525 sghimi3@steam.cct.lsu.edu ;;
+      whaley)   ssh cs350115@classes.csc.lsu.edu      ;;
+      sql)      ssh cs440214@classes.csc.lsu.edu      ;;
+      *)        echo "$1.cct.lsu.edu not found!"      ;;
     esac
   fi
 }
@@ -45,8 +52,6 @@ function cd() {
   n_dir="$*"
   if [ $# -eq 0 ]; then 
     n_dir=${HOME}; fi
-  if [ "$1" == "git" ]; then 
-    n_dir=$(git rev-parse --show-toplevel); fi
   builtin cd "${n_dir}" && ls
 }
 
@@ -62,4 +67,12 @@ function run32() {
 function remindme() {
   echo "mutt email@hostname.com -a File1 File2 -s \"Subject\" <<< \"Body\""
   echo "tar cvvzf dir-name.tgz dir-name/"
+}
+
+function smash() {
+  if [ ! -z "$1" ]; then
+    gcc -m32 -static -fno-stack-protector -z execstack -D_FORTIFY_SOURCE=0 -o $1 $1.c
+  else
+    echo 'Usage: smash <exe>'
+  fi
 }

@@ -4,17 +4,19 @@ alias ...='cd ../../'
 alias c='clear'
 alias chist='history -c && history -w'
 alias vi='vim'
-alias op='gnome-open'
+alias op='xdg-open'
 alias update='sudo apt update && sudo apt upgrade'
 alias fixwifi='sudo service network-manager restart'
 alias gs='git status'
 alias gd='git diff'
 alias gl='git log'
+alias gc='git commit -m'
 alias gg='cd $(git rev-parse --show-toplevel)'
 alias ta='tmux attach -t '
 alias xc='xcape -e '"'"'Control_L=Escape'"'"
 alias setclip='xclip -selection c'
 alias getclip='xclip -selection clipboard -o'
+alias :q='echo "YOU CAN NEVER ESCAPE VIM!!!"'
 
 function cct() {
   if [ -z "$1" ]; then
@@ -31,10 +33,10 @@ function go() {
     echo "Usage: go [server_name]"
   else
     case "$1" in
-      steam)    ssh -p 2525 sghimi3@steam.cct.lsu.edu ;;
-      whaley)   ssh cs350115@classes.csc.lsu.edu      ;;
-      sql)      ssh cs440214@classes.csc.lsu.edu      ;;
-      *)        echo "$1.cct.lsu.edu not found!"      ;;
+      steam)  ssh -p 2525 sghimi3@steam.cct.lsu.edu ;;
+      golden) ssh cs410324@classes.csc.lsu.edu      ;;
+      chen)   ssh cs444416@classes.csc.lsu.edu      ;;
+      *)      echo "$1.cct.lsu.edu not found!"      ;;
     esac
   fi
 }

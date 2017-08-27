@@ -11,7 +11,7 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 
 " my plugins
-" Plugin 'valloric/youcompleteme'
+Plugin 'valloric/youcompleteme'
 Plugin 'scrooloose/syntastic'
 Plugin 'bling/vim-airline'
 Plugin 'tpope/vim-surround'
@@ -21,14 +21,12 @@ Plugin 'scrooloose/nerdcommenter'
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'godlygeek/tabular'
 Plugin 'vim-airline/vim-airline-themes'
-Plugin 'ConradIrwin/vim-bracketed-paste'
-Plugin 'neovimhaskell/haskell-vim'
-Plugin 'rust-lang/rust.vim'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'gabrielelana/vim-markdown'
 Plugin 'tpope/vim-fugitive'
 Plugin 'mattn/emmet-vim'
-Plugin 'jaxbot/browserlink.vim'
+Plugin 'ctrlpvim/ctrlp.vim'
+Plugin 'pangloss/vim-javascript'
 
 
 " All of your Plugins must be added before the following line
@@ -48,16 +46,17 @@ let mapleader = "\<Space>"
 " :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
 
 " For YCM
-" let g:ycm_global_ycm_extra_conf = '~/defaults/ycm_conf'
-" let g:ycm_confirm_extra_conf = 0
-" set completeopt-=preview
-" "nnoremap <F5> :YcmForceCompileAndDiagnostics<CR>
-" let g:ycm_show_diagnostics_ui = 1
-" let g:ycm_enable_diagnostic_signs = 0
-" let g:ycm_enable_diagnostic_highlighting = 0
-" let g:ycm_echo_current_diagnostic = 0
-" let g:ycm_always_populate_location_list = 0
-" let g:ycm_open_loclist_on_ycm_diags = 0
+"  let g:ycm_confirm_extra_conf = 0
+set completeopt-=preview
+" nnoremap <F5> :YcmForceCompileAndDiagnostics<CR>
+"  let g:ycm_show_diagnostics_ui = 1
+"  let g:ycm_enable_diagnostic_signs = 0
+"  let g:ycm_enable_diagnostic_highlighting = 0
+"  let g:ycm_echo_current_diagnostic = 0
+"  let g:ycm_always_populate_location_list = 0
+"  let g:ycm_open_loclist_on_ycm_diags = 0
+let g:ycm_global_ycm_extra_conf = '/usr/share/vim/vimfiles/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
+let g:ycm_confirm_extra_conf = 0
 
 " For syntastic
 set statusline+=%#warningmsg#
@@ -149,9 +148,10 @@ iab fudoc /**
 " Tab/space/numbering/formatting options
 set number
 set expandtab
-set tabstop=2
-set shiftwidth=2
+set tabstop=4
+set shiftwidth=4
 set autoindent
+set ignorecase
 set smartcase
 set hlsearch
 set wrap
@@ -167,7 +167,7 @@ set clipboard=unnamedplus
 " Shortcut to save
 :nnoremap <leader>w :w<CR>
 " Press the backslash to turn off highlighting and clear any message already displayed.
-:nnoremap <silent>\ :nohlsearch<Bar>:echo<CR>
+:nnoremap <silent><Esc> :nohlsearch<Bar>:echo<CR>
 " Shortcut to call run script that compiles and runs programs
 :nnoremap <leader>r :! run % 
 " Compile and run tex files if Makefile is necessary
@@ -197,7 +197,18 @@ nnoremap k gk
 au BufNewFile,BufRead *.para set filetype=rst
 au BufEnter *.tex set tw=0
 au BufEnter *.S set sw=4 ts=4
+au BufEnter *.c set sw=2 ts=2
 "au BufEnter *.md set sw=4 ts=4
 
 " Remove delay when escaping in Vim
 set timeoutlen=1000 ttimeoutlen=10
+
+" automatically enter paste mode when pasting
+let &t_SI .= "\<Esc>[?2004h"
+let &t_EI .= "\<Esc>[?2004l"
+inoremap <special> <expr> <Esc>[200~ XTermPasteBegin()
+function! XTermPasteBegin()
+  set pastetoggle=<Esc>[201~
+  set paste
+  return ""
+endfunction

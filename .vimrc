@@ -14,16 +14,15 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'valloric/youcompleteme'
 Plugin 'scrooloose/syntastic'
 Plugin 'bling/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-repeat'
 Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'godlygeek/tabular'
-Plugin 'vim-airline/vim-airline-themes'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'gabrielelana/vim-markdown'
-Plugin 'tpope/vim-fugitive'
 Plugin 'mattn/emmet-vim'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'pangloss/vim-javascript'
@@ -167,7 +166,7 @@ set clipboard=unnamedplus
 " Shortcut to save
 :nnoremap <leader>w :w<CR>
 " Press the backslash to turn off highlighting and clear any message already displayed.
-:nnoremap <silent><Esc> :nohlsearch<Bar>:echo<CR>
+:nnoremap <silent>\ :nohlsearch<Bar>:echo<CR>
 " Shortcut to call run script that compiles and runs programs
 :nnoremap <leader>r :! run % 
 " Compile and run tex files if Makefile is necessary

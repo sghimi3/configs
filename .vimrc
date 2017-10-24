@@ -12,7 +12,7 @@ Plugin 'VundleVim/Vundle.vim'
 
 " my plugins
 Plugin 'valloric/youcompleteme'
-Plugin 'scrooloose/syntastic'
+"Plugin 'scrooloose/syntastic'
 Plugin 'bling/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'tpope/vim-surround'
@@ -26,6 +26,7 @@ Plugin 'gabrielelana/vim-markdown'
 Plugin 'mattn/emmet-vim'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'pangloss/vim-javascript'
+Plugin 'xuhdev/vim-latex-live-preview'
 
 
 " All of your Plugins must be added before the following line
@@ -45,7 +46,6 @@ let mapleader = "\<Space>"
 " :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
 
 " For YCM
-"  let g:ycm_confirm_extra_conf = 0
 set completeopt-=preview
 " nnoremap <F5> :YcmForceCompileAndDiagnostics<CR>
 "  let g:ycm_show_diagnostics_ui = 1
@@ -54,21 +54,21 @@ set completeopt-=preview
 "  let g:ycm_echo_current_diagnostic = 0
 "  let g:ycm_always_populate_location_list = 0
 "  let g:ycm_open_loclist_on_ycm_diags = 0
-let g:ycm_global_ycm_extra_conf = '/usr/share/vim/vimfiles/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
+let g:ycm_global_ycm_extra_conf = '/home/sweta/.ycm_extra_conf.py'
 let g:ycm_confirm_extra_conf = 0
 
 " For syntastic
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 0
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_cpp_compiler_options = '-std=c++11'
-let g:syntastic_c_compiler_options = '-std=c99'
-let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': [],'passive_filetypes': [] }
-map <leader>s :SyntasticCheck<CR>
+" set statusline+=%#warningmsg#
+" set statusline+=%{SyntasticStatuslineFlag()}
+" set statusline+=%*
+" let g:syntastic_always_populate_loc_list = 1
+" let g:syntastic_auto_loc_list = 0
+" let g:syntastic_check_on_open = 1
+" let g:syntastic_check_on_wq = 0
+" let g:syntastic_cpp_compiler_options = '-std=c++11'
+" let g:syntastic_c_compiler_options = '-std=c99'
+" let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': [],'passive_filetypes': [] }
+" map <leader>s :SyntasticCheck<CR>
 
 " For vim-airline
 set laststatus=2
@@ -162,6 +162,7 @@ set backspace=indent,eol,start
 set ff=unix
 set conceallevel=2
 set clipboard=unnamedplus
+set mouse=nv
 
 " Shortcut to save
 :nnoremap <leader>w :w<CR>

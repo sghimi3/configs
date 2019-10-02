@@ -11,7 +11,7 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 
 " my plugins
-Plugin 'valloric/youcompleteme'
+"Plugin 'valloric/youcompleteme'
 "Plugin 'scrooloose/syntastic'
 Plugin 'bling/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
@@ -27,6 +27,7 @@ Plugin 'mattn/emmet-vim'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'pangloss/vim-javascript'
 Plugin 'xuhdev/vim-latex-live-preview'
+Plugin 'Yggdroot/indentLine'
 
 
 " All of your Plugins must be added before the following line
@@ -56,6 +57,7 @@ set completeopt-=preview
 "  let g:ycm_open_loclist_on_ycm_diags = 0
 let g:ycm_global_ycm_extra_conf = '/home/sweta/.ycm_extra_conf.py'
 let g:ycm_confirm_extra_conf = 0
+let g:ycm_server_python_interpreter = '/usr/bin/python'
 
 " For syntastic
 " set statusline+=%#warningmsg#
@@ -120,32 +122,9 @@ let g:molokai_original = 1
 let g:rehash256 = 1
 colorscheme mycolorscheme
 
-" Insert mode abbreviations
-ab iio   #include <iostream>
-ab fitn  for (int i=0; i<n; i++)
-ab co    std::cout <<
-ab ci    std::cin  >>
-ab el    << std::endl
-
-
-" Documentation of file
-iab fidoc /**
-\<CR> @file
-\<CR>@author  Sweta Ghimire <sghimi3@lsu.edu>
-\<CR>@section Description 
-\<CR> 
-\<CR>/<Up>
-
-" Documentation of function
-iab fudoc /**
-\<CR> 
-\<CR>@param   
-\<CR>@return  
-\<CR>/<Up><Up><Up>
-
 
 " Tab/space/numbering/formatting options
-set number
+set number 
 set expandtab
 set tabstop=4
 set shiftwidth=4
@@ -195,7 +174,7 @@ nnoremap k gk
 
 " au BufNewFile,BufRead *.txt  set filetype=rst
 au BufNewFile,BufRead *.para set filetype=rst
-au BufEnter *.tex set tw=0
+au BufEnter *.tex set tw=80
 au BufEnter *.S set sw=4 ts=4
 au BufEnter *.c set sw=2 ts=2
 "au BufEnter *.md set sw=4 ts=4
